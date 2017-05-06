@@ -1,0 +1,150 @@
+Elastic Search handler and mapping:
+
+http://search-domainname-domainid.us-east-1.es.amazonaws.com
+
+search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com
+//curl -XPUT search-movies-4f3nw7eiia2xiynjr55a2nao2y.us-west-1.es.amazonaws.com/movies/movie/tt0116996 -d '{"directors" : ["Tim Burton"],"genres" : ["Comedy","Sci-Fi"],"plot" : "The Earth is invaded by Martians with irresistible weapons and a cruel sense of humor.","title" : "Mars Attacks!","actors" : ["Jack Nicholson","Pierce Brosnan","Sarah Jessica Parker"],"year" : 1996}'
+
+curl -XPUT search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/ -d '{"directors" : ["Tim Burton"],"genres" : ["Comedy","Sci-Fi"],"plot" : "The Earth is invaded by Martians with irresistible weapons and a cruel sense of humor.","title" : "Mars Attacks!","actors" : ["Jack Nicholson","Pierce Brosnan","Sarah Jessica Parker"],"year" : 1996}'
+
+curl -XPUT search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/ 
+-d '{"directors" : ["Tim Burton"],"genres" : ["Comedy","Sci-Fi"],"plot" : "The Earth is invaded by Martians with irresistible weapons and a cruel sense of humor.","title" : "Mars Attacks!","actors" : ["Jack Nicholson","Pierce Brosnan","Sarah Jessica Parker"],"year" : 1996}'
+
+curl -XGET 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/skholres/_search?q=ticker_symbol'
+
+curl -XGET 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/movies/_search?q=nightmare'
+
+curl -XPUT 'localhost:9200/movies?pretty' -H 'Content-Type: application/json' -d'
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+
+
+curl -XGET 'localhost:9200/twitter?pretty'
+
+curl -XPUT 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/twitter' -H 'Content-Type: application/json' -d'
+{
+	"settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+
+curl -XPUT 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/skholres' -H 'Content-Type: application/json' -d'
+{
+	"settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+curl -XPUT search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/twitter -d '{"tweet": {"message" : "Shrivardhan Rao", "user_name": "srao7"}, "user": {"name": "First Tweet"} }'
+curl -XPUT 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/twitter' -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "tweet": {
+      "properties": {
+        "message": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}
+'
+curl -XPUT 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/twitter/_mapping/user?pretty' -H 'Content-Type: application/json' -d'
+{
+  "properties": {
+    "name": {
+      "type": "text"
+    }
+  }
+}
+'
+curl -XPUT 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/twitter/_mapping/tweet?pretty' -H 'Content-Type: application/json' -d'
+{
+  "properties": {
+    "user_name": {
+      "type": "text"
+    }
+  }
+}
+'
+
+curl -XDELETE 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/twitter?pretty'
+
+curl -XGET 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/skholrdocs?pretty'
+
+curl -XGET 'search-skholr-vib3xbex4u3fm35sw65fezu5ga.us-east-1.es.amazonaws.com/skholrcdn?pretty'
+curl -XDELETE 'search-skholr-vib3xbex4u3fm35sw65fezu5ga.us-east-1.es.amazonaws.com/skholrcdn/_query' -d '{
+    "query" : { 
+        "match_all" : {}
+    }
+}'
+curl -XPUT 'search-skholr-vib3xbex4u3fm35sw65fezu5ga.us-east-1.es.amazonaws.com/skholrcdn' -H 'Content-Type: application/json' -d'
+{
+	"settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+
+curl -XGET 'search-skholr-vib3xbex4u3fm35sw65fezu5ga.us-east-1.es.amazonaws.com/skholrcdn?pretty'
+
+curl -XDELETE 'search-skholr-vib3xbex4u3fm35sw65fezu5ga.us-east-1.es.amazonaws.com/skholrcdn?pretty'
+
+curl -XPUT 'search-skholr-vib3xbex4u3fm35sw65fezu5ga.us-east-1.es.amazonaws.com/skholrcdn' -H 'Content-Type: application/json' -d'
+{
+	"settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+
+curl -XGET 'search-skholres-yxnrqz2y6uzrgmbqhkw7e6es7i.us-east-1.es.amazonaws.com?pretty'
+curl -XGET 'search-skholres-yxnrqz2y6uzrgmbqhkw7e6es7i.us-east-1.es.amazonaws.com/_cat/indices?v&pretty'
+
+
+curl -XPUT 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/skholrdocs' -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "docs": {
+      "properties": {
+        "docID": {
+          "type": "text"
+        },
+        "title": {
+          "type": "text"
+        },
+        "topic": {
+          "type": "text"
+        },
+        "keywords" : {
+          "type" : "keyword" 
+        }
+      }
+    }
+  }
+}
+'
+//note: in the above mapping "type" : "keyword" is dynamically mapped to an array of text(read strings) as strings was replaced by text in ES 5.3
+//As a consequence, it will both be possible to perform full-text search on foo, and keyword search and aggregations using the foo.keyword field.
+//chrome-extension://lhjgkmllcaadmopgmanpapmpjgmfcfig/index.html# for posting ES 
+curl -XGET 'search-skholres-lagynlsq2uf5ut7mzzwe6npujm.us-west-2.es.amazonaws.com/skholrdocs/docs/_search?q="Sci-Fi"'
